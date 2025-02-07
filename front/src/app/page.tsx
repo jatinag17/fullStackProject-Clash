@@ -1,11 +1,9 @@
 import React from 'react'
-import {Button} from "@/components/ui/button"
-
+import HeroSection from '@/components/ui/base/HeroSection'
 export default function App() {
   return (
     <div>
-      <h1 className='text-red-500'>I am home page</h1>
-      <Button>Hello next</Button>
+      <HeroSection/>
     </div>
   )
 }
