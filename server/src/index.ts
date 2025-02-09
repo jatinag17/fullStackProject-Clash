@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 7000;
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const _dirname=path.dirname(fileURLToPath(import.meta.url));
+const __dirname=path.dirname(fileURLToPath(import.meta.url));
 
 
 
@@ -20,6 +20,6 @@ app.set('views', path.resolve(__dirname, './views'));
 
 
 app.get('/',(req: Request,res: Response) => {
-    res.send("Hey It's working...");
+    res.render('welcome');
 });
  app.listen(PORT,() =>console.log(`Server is running on PORT ${PORT}`));
