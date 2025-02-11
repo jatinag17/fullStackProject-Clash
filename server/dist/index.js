@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false }));
 //* set View engine
 app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, './views'));
-app.get('/', (req, res) => {
-    res.render('welcome');
+app.get('/', async (req, res) => {
+    res.render('emails/welcome', { name: "jatin agrawal" });
 });
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

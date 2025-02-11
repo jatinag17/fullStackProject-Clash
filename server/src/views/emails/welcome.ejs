@@ -1,25 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
-    <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            background-color: blueviolet;
-        }
-    </style>
-</head>
+
+<%- include('../partials/head')%>
+
 <body>
     <div class="container">
-    <h1>I am Welcome file.</h1>
-    <p>Good to see you</p>
-    <h3>I am here </h3>
+   <p>Hello <strong><%= name %></strong></p>
+   <p>We are happy to onboard you.we can't wait your clash.</p>
+   <p>If you have any query then let us know .we are happy to help you</p>
+<%- include('../partials/footer')%>
     </div>
 </body>
 </html>

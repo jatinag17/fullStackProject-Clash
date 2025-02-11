@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, './views'));
 
 
-app.get('/',(req: Request,res: Response) => {
-    res.render('welcome');
+app.get('/',async (req: Request,res: Response) => {
+    res.render('emails/welcome',{name:"jatin agrawal"});
 });
  app.listen(PORT,() =>console.log(`Server is running on PORT ${PORT}`));
