@@ -31,6 +31,7 @@
     "typescipt": "^1.0.0"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
     "copyfiles": "^2.4.1"
   }
 }
