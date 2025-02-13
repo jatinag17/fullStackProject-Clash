@@ -8,7 +8,7 @@ export const transporter = nodemailer.createTransport({
         pass: process.env.SMTP_PASSWORD,
     },
 });
-export const sendMail = async (to, subject, body) => {
+export const sendEmail = async (to, subject, body) => {
     await transporter.sendMail({
         from: process.env.FROM_EMAIL,
         to: to,
