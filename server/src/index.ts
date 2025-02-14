@@ -1,7 +1,7 @@
 import express,{Application,Request,Response} from 'express';
 import "dotenv/config"
-import { sendEmail } from "./config/mail.js"; 
-
+ 
+import Routes  from './routes/index.js';
 const app: Application = express();
 import ejs from "ejs";
 const PORT = process.env.PORT || 7000;
@@ -15,6 +15,10 @@ app.use(express.urlencoded({extended:false}));
 //* set View engine
 app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, './views'));
+
+//* Routes
+
+app.use(Routes);
 app.get('/',async (req: Request,res: Response) => {
     const html = await ejs.renderFile(__dirname + `/views/emails/welcome.ejs`, {name: "Jatin Agrawal"})
     // await sendEmail("sedod75013@sectorid.com", "Testing SMTP", html);
