@@ -1,6 +1,5 @@
 import express from 'express';
 import "dotenv/config";
-import { sendEmail } from "./config/mail.js";
 const app = express();
 import ejs from "ejs";
 const PORT = process.env.PORT || 7000;
@@ -14,7 +13,11 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, './views'));
 app.get('/', async (req, res) => {
     const html = await ejs.renderFile(__dirname + `/views/emails/welcome.ejs`, { name: "Jatin Agrawal" });
-    await sendEmail("sedod75013@sectorid.com", "Testing SMTP", html);
+    // await sendEmail("sedod75013@sectorid.com", "Testing SMTP", html);
+    await emailQueue.add(emailQueueName, { to: "sedod75013@sectorid.com", subject: "Testing queue email", body: "html" });
     res.json({ msg: "Email send successfully" });
 });
+//* Queues
+import "./jobs/EmailJob.js";
+import { emailQueue, emailQueueName } from './jobs/EmailJob.js';
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
