@@ -1,5 +1,6 @@
 import express from 'express';
 import "dotenv/config";
+import Routes from './routes/index.js';
 const app = express();
 import ejs from "ejs";
 const PORT = process.env.PORT || 7000;
@@ -11,6 +12,8 @@ app.use(express.urlencoded({ extended: false }));
 //* set View engine
 app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, './views'));
+//* Routes
+app.use(Routes);
 app.get('/', async (req, res) => {
     const html = await ejs.renderFile(__dirname + `/views/emails/welcome.ejs`, { name: "Jatin Agrawal" });
     // await sendEmail("sedod75013@sectorid.com", "Testing SMTP", html);
