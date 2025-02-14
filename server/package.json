@@ -29,7 +29,8 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "prisma": "^6.3.1",
-    "typescipt": "^1.0.0"
+    "typescipt": "^1.0.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
