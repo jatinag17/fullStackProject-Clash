@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { registerSchema } from '../validation/authValidation.js';
+import { ZodError } from 'zod';
+import { formatError } from '../helper.js';
 const router = Router();
 //* Register route
 router.post("/register", async (req, res) => {
@@ -9,7 +11,11 @@ router.post("/register", async (req, res) => {
         res.json(payload);
     }
     catch (error) {
-        res.status(422).json(error);
+        if (error instanceof ZodError) {
+            const errors = formatError(error);
+            res.status(422).json({ message: "Invalid Data", errors });
+        }
+        return res.status(500).json({ message: "Something went wrong.pls try again!" });
     }
 });
 export default router;
