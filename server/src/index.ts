@@ -21,7 +21,6 @@ app.set('views', path.resolve(__dirname, './views'));
 app.use(Routes);
 app.get('/',async (req: Request,res: Response) => {
     const html = await ejs.renderFile(__dirname + `/views/emails/welcome.ejs`, {name: "Jatin Agrawal"})
-    // await sendEmail("sedod75013@sectorid.com", "Testing SMTP", html);
     await emailQueue.add(emailQueueName, {to:"sedod75013@sectorid.com", subject:"Testing queue email",body:"html"});
      res.json({msg:"Email send successfully"});
 });
