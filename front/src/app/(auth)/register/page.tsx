@@ -2,6 +2,8 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { registerAction } from "@/actions/authActions";
+import { SubmitButton } from "@/components/common/SubmitButton";
 export default function register() {
   return (
     <div className="flex justify-center items-center h-screen">
@@ -11,11 +13,11 @@ export default function register() {
         </h1>
         <h1 className="text-2xl font-bold">Register</h1>
         <p>Welcome to clash</p>
-        <form>
+        <form action={registerAction}>
           <div className="mt-4">
             <Label htmlFor="name">Name</Label>
             <Input
-              type="name"
+              type="name" 
               id="name"
               name="name"
               placeholder="Enter your name..."
@@ -51,9 +53,7 @@ export default function register() {
             </div>
 
           <div className="mt-4">
-            <button className="w-full bg-gradient-to-r from-pink-500 to-purple-800 text-white py-2 rounded-lg">
-              Submit
-            </button>
+            <SubmitButton />
           </div>
         </form>
         <p className="text-center mt-2">
