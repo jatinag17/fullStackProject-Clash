@@ -6,7 +6,12 @@ import axios, { AxiosError } from "axios"
 export async function registerAction(prevState:any, formData:FormData){
      
     try{
-      const {data}= await axios.post(REGISTER_URL,formData)
+      const {data}= await axios.post(REGISTER_URL,{
+            name:formData.get("name"),
+            email:formData.get("email"),
+            password:formData.get("password"),
+            confirm_password:formData.get("confirm_password"),
+      })
         return {
             status: 200,
             message:data?.message?? "Account created successfully! Please check your email and verify your email",
@@ -28,10 +33,6 @@ export async function registerAction(prevState:any, formData:FormData){
           errors:{},
         };
 
-          return {
-            status: 200,
-            message: "Submitted",
-            errors: {},
-          };
+         
     }
 }
