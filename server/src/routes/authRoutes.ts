@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import {v4 as uuid4} from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/EmailJob.js";
 import jwt from "jsonwebtoken";
+import authMiddleware from '../middleware/AuthMiddleware.js';
 const router = Router();
 
 
@@ -118,6 +119,12 @@ res.json({message:"Please check your email.We have sent your verification email!
     
 });
 
+//* Get User
+
+router.get("/user",authMiddleware,async(req:Request,res:Response) => {
+    const user = req.user
+    res.json({data:user});
+});
 
 
 export default router;

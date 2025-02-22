@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import { v4 as uuid4 } from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/EmailJob.js";
 import jwt from "jsonwebtoken";
+import authMiddleware from '../middleware/AuthMiddleware.js';
 const router = Router();
 //* Login routes
 router.post("/login", async (req, res) => {
@@ -97,5 +98,10 @@ router.post("/register", async (req, res) => {
         }
         res.status(500).json({ message: "Something went wrong.pls try again!" });
     }
+});
+//* Get User
+router.get("/user", authMiddleware, async (req, res) => {
+    const user = req.user;
+    res.json({ data: user });
 });
 export default router;
