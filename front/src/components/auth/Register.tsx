@@ -8,13 +8,13 @@ import { registerAction } from "@/actions/authActions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 export default function Register() {
-  const router = useRouter();
-  const initialState = {
+  
+  const initState = {
     message: "",
     status: 0,
     errors: {},
   };
-  const [state, formAction] = useFormState(registerAction, initialState);
+  const [state, formAction] = useFormState(registerAction, initState);
 
   useEffect(() => {
     if (state.status === 404) {
