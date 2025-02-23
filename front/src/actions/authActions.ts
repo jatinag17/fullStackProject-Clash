@@ -1,6 +1,6 @@
 "use server"
 
-import { REGISTER_URL,LOGIN_URL } from "@/lib/apiEndPoints"
+import { REGISTER_URL,LOGIN_URL, CHECK_CREDENTIALS_URL } from "@/lib/apiEndPoints"
 import axios, { AxiosError } from "axios"
 
 export async function registerAction(prevState:any, formData:FormData){
@@ -39,7 +39,7 @@ export async function registerAction(prevState:any, formData:FormData){
 
 export async function loginAction(prevState: any, formData: FormData) {
   try {
-    const { data } = await axios.post(LOGIN_URL, {
+    const { data } = await axios.post(CHECK_CREDENTIALS_URL, {
       email: formData.get("email"),
       password: formData.get("password"),
       });
@@ -47,8 +47,12 @@ export async function loginAction(prevState: any, formData: FormData) {
       status: 200,
       message:
         data?.message ??
-        "Login you.",
+        "Logging you.",
       errors: {},
+      data:{
+        email:formData.get("email"),
+        password:formData.get("password"),
+      }
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -57,6 +61,7 @@ export async function loginAction(prevState: any, formData: FormData) {
           status: 422,
           message: error.response?.data?.message,
           errors: error.response?.data.errors,
+          data:{}
         };
       }
     }
@@ -64,6 +69,7 @@ export async function loginAction(prevState: any, formData: FormData) {
       status: 500,
       message: "Something went wrong.please try again!",
       errors: {},
+      data:{}
     };
   }
 }
