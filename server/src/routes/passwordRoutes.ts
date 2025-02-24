@@ -98,6 +98,21 @@ router.post("/reset-password",async(req:Request, res:Response) => {
              },
            });
         }
+        //* update password
+        const salt = await bcrypt.genSalt(10);
+        const newPass = await bcrypt.hash(payload.password, salt);
+
+        await prisma.user.update({
+            data:{
+                password:newPass,
+                password_reset_token:null,
+                token_send_at:null
+            },
+            where:{
+                email:payload.email
+            }
+        })
+        res.json({message:"Password reset successfully.Please try to login now!"});
 
     } catch (error) {
         if (error instanceof ZodError) {
