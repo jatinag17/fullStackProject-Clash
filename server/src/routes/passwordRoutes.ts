@@ -3,12 +3,14 @@ import prisma from "../config/database.js";
 import { authLimitter } from "../config/rateLimit.js";
 import { ZodError } from "zod";
 import { formatError, renderEmailEjs } from "../helper.js";
-import { forgetPasswordSchema } from "../validation/passwordValidation.js";
+import { forgetPasswordSchema, resetPasswordSchema } from "../validation/passwordValidation.js";
 import bcrypt from "bcrypt";
 import {v4 as uuidV4} from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/EmailJob.js";
 const router = Router();
 
+
+//*Forget password 
 router.post("/forget-password", authLimitter,async(req:Request,res:Response)=>{
     try {
         const body=req.body;
@@ -54,9 +56,48 @@ router.post("/forget-password", authLimitter,async(req:Request,res:Response)=>{
             res.status(500)
             .json({ message: "Something went wrong.pls try again!" });
           }
-})
+});
 
+// *Reset password
+router.post("/reset-password",async(req:Request, res:Response) => {
+    try {
+        const body=req.body;
+        const payload=resetPasswordSchema.parse(body);
+        
+        let user = await prisma.user.findUnique({
+          where: {
+            email: payload.email,
+          },
+        });
+        if (!user || user === null) {
+          res.status(422).json({
+            message: "Invalid Data",
+            errors: {
+              email: "Link is not correct make sure you copied correct link.",
+            },
+          });
+        }
 
+        //* Check token
+        if(user?.password_reset_token!==payload.token){
+           res.status(422).json({
+             message: "Invalid Data",
+             errors: {
+               email: "Link is not correct make sure you copied correct link.",
+             },
+           });
+        }
+        
+    } catch (error) {
+        if (error instanceof ZodError) {
+          const errors = formatError(error);
+          res.status(422).json({ message: "Invalid Data", errors });
+        }
+        res
+          .status(500)
+          .json({ message: "Something went wrong.pls try again!" });
+    }
+});
 
 
 export default router;
