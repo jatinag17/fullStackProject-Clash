@@ -2,10 +2,11 @@ import { Router,Request,Response } from "express";
 import prisma from "../config/database.js";
 import { authLimitter } from "../config/rateLimit.js";
 import { ZodError } from "zod";
-import { formatError } from "../helper.js";
+import { formatError, renderEmailEjs } from "../helper.js";
 import { forgetPasswordSchema } from "../validation/passwordValidation.js";
 import bcrypt from "bcrypt";
 import {v4 as uuidV4} from "uuid";
+import { emailQueue, emailQueueName } from "../jobs/EmailJob.js";
 const router = Router();
 
 router.post("/forget-password", authLimitter,async(req:Request,res:Response)=>{
@@ -33,6 +34,17 @@ router.post("/forget-password", authLimitter,async(req:Request,res:Response)=>{
                 email:payload.email
             }
         })
+        
+        const url = `${process.env.CLIENT_APP_URL}/reset-password?email=${payload.email}&token=${token}`
+        const html =await renderEmailEjs("forget-password",{url: url})
+         await emailQueue.add(emailQueueName, {
+           to: payload.email,
+           subject: "Reset your password",
+           body:html
+         });
+
+         res.json({message:"Password reset link sent successfully! please check your email."})
+        
         
     } catch (error) {
          if (error instanceof ZodError) {
