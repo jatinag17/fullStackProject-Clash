@@ -2,7 +2,7 @@ import { Router,Request,Response } from "express";
 import prisma from "../config/database.js";
 import { authLimitter } from "../config/rateLimit.js";
 import { ZodError } from "zod";
-import { formatError, renderEmailEjs } from "../helper.js";
+import { checkDateHourDiff, formatError, renderEmailEjs } from "../helper.js";
 import { forgetPasswordSchema, resetPasswordSchema } from "../validation/passwordValidation.js";
 import bcrypt from "bcrypt";
 import {v4 as uuidV4} from "uuid";
@@ -87,7 +87,18 @@ router.post("/reset-password",async(req:Request, res:Response) => {
              },
            });
         }
-        
+
+        //* Check 2 hours timeframe
+        const hoursDiff=checkDateHourDiff(user?.token_send_at!)
+        if(hoursDiff>2){
+           res.status(422).json({
+             message: "Invalid Data",
+             errors: {
+               email: "Password reset token got expired .please send new token! ",
+             },
+           });
+        }
+
     } catch (error) {
         if (error instanceof ZodError) {
           const errors = formatError(error);
