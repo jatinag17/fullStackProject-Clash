@@ -37,6 +37,7 @@ export async function registerAction(prevState:any, formData:FormData){
     }
 }
 
+
 export async function loginAction(prevState: any, formData: FormData) {
   try {
     const { data } = await axios.post(CHECK_CREDENTIALS_URL, {
@@ -70,6 +71,39 @@ export async function loginAction(prevState: any, formData: FormData) {
       message: "Something went wrong.please try again!",
       errors: {},
       data:{}
+    };
+  }
+}
+export async function forgetPasswordAction(prevState: any, formData: FormData) {
+  try {
+    const { data } = await axios.post(CHECK_CREDENTIALS_URL, {
+      email: formData.get("email"),
+      password: formData.get("password"),
+      });
+    return {
+      status: 200,
+      message:
+        data?.message ??
+        "Logging you.",
+      errors: {},
+     
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 422) {
+        return {
+          status: 422,
+          message: error.response?.data?.message,
+          errors: error.response?.data.errors,
+          data:{}
+        };
+      }
+    }
+    return {
+      status: 500,
+      message: "Something went wrong.please try again!",
+      errors: {},
+      
     };
   }
 }
