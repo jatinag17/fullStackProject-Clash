@@ -4,23 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/common/SubmitButton";
 import { useFormState } from "react-dom";
-import { registerAction } from "@/actions/authActions";
+import { registerAction, resetPasswordAction } from "@/actions/authActions";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams ,useRouter } from "next/navigation";
 export default function ResetPassword() {
   const initState = {
     message: "",
     status: 0,
     errors: {},
   };
-  const [state, formAction] = useFormState(registerAction, initState);
+  const [state, formAction] = useFormState(resetPasswordAction, initState);
   const sParasm=useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     if (state.status === 404) {
       toast.error(state.message);
     } else if (state.status === 200) {
       toast.success(state.message);
+      setTimeout(()=>{
+        router.replace('/login')
+      },1000);
     }
   }, [state]);
   return (
