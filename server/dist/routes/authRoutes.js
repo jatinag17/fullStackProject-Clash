@@ -8,9 +8,10 @@ import { v4 as uuid4 } from "uuid";
 import { emailQueue, emailQueueName } from "../jobs/EmailJob.js";
 import jwt from "jsonwebtoken";
 import authMiddleware from '../middleware/AuthMiddleware.js';
+import { authLimitter } from '../config/rateLimit.js';
 const router = Router();
 //* Login routes
-router.post("/login", async (req, res) => {
+router.post("/login", authLimitter, async (req, res) => {
     try {
         const body = req.body;
         const payload = loginSchema.parse(body);
@@ -58,7 +59,7 @@ router.post("/login", async (req, res) => {
     }
 });
 //* Login Check route
-router.post("/check/credentials", async (req, res) => {
+router.post("/check/credentials", authLimitter, async (req, res) => {
     try {
         const body = req.body;
         const payload = loginSchema.parse(body);
@@ -98,7 +99,7 @@ router.post("/check/credentials", async (req, res) => {
     }
 });
 //* Register route
-router.post("/register", async (req, res) => {
+router.post("/register", authLimitter, async (req, res) => {
     try {
         const body = req.body;
         const payload = registerSchema.parse(body);
