@@ -1,6 +1,6 @@
 "use server"
 
-import { REGISTER_URL,LOGIN_URL, CHECK_CREDENTIALS_URL } from "@/lib/apiEndPoints"
+import { REGISTER_URL,LOGIN_URL, CHECK_CREDENTIALS_URL, FORGET_PASSWORD_URL } from "@/lib/apiEndPoints"
 import axios, { AxiosError } from "axios"
 
 export async function registerAction(prevState:any, formData:FormData){
@@ -76,15 +76,14 @@ export async function loginAction(prevState: any, formData: FormData) {
 }
 export async function forgetPasswordAction(prevState: any, formData: FormData) {
   try {
-    const { data } = await axios.post(CHECK_CREDENTIALS_URL, {
+    const { data } = await axios.post(FORGET_PASSWORD_URL, {
       email: formData.get("email"),
-      password: formData.get("password"),
       });
     return {
       status: 200,
       message:
         data?.message ??
-        "Logging you.",
+        "We have emailed you the password reset link.",
       errors: {},
      
     };
