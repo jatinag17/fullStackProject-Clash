@@ -54,10 +54,10 @@ export default function Login() {
         <span className="text-red-500">{state.errors?.password}</span>
         <div className="text-right">
           <Link
-            href="forgot-password"
+            href="forget-password"
             className="text-blue-600 hover:text-blue-800"
           >
-            Forgot Password?
+            Forget Password?
           </Link>
         </div>
       </div>
