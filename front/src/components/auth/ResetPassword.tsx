@@ -23,6 +23,7 @@ export default function ResetPassword() {
     } else if (state.status === 200) {
       toast.success(state.message);
       setTimeout(()=>{
+        
         router.replace('/login')
       },1000);
     }
